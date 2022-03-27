@@ -1,12 +1,9 @@
 package com.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -17,20 +14,19 @@ public class Flower {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer flower_id;
-    @Column(name = "name")
+    private Integer flowerId;
     private String name;
-    @Column(name = "flowerPrice")
     private Integer flowerPrice;
-//    private LocalDate intakeDate;
-//    private LocalDate expires;
-//    private Integer amount;
-    // private Integer suppler_id;
-//    private double length;
-//    private String color;
+    private double length;
+    private String color;
+    private LocalDate intakeDate;
+    private LocalDate expires;
+    private Integer amount;
+//     private Integer suppler_id;
 
-    @ManyToOne
-    @JoinColumn(name = "flowerOrder_id")
-    private FlowersOrder flowerOrders;
+    @ToString.Exclude
+    @OneToOne
+    @JoinColumn(name = "flowersOrderId")
+    private FlowersForOrdering flowersForOrdering;
 
 }

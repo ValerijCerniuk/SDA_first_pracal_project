@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -25,8 +26,7 @@ public class Flower {
 //     private Integer suppler_id;
 
     @ToString.Exclude
-    @OneToOne
-    @JoinColumn(name = "flowersOrderId")
-    private FlowersForOrdering flowersForOrdering;
+    @OneToMany(mappedBy = "flower")
+    private List<FlowersForOrdering> flowersForOrdering;
 
 }

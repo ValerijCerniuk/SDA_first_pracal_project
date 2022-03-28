@@ -3,7 +3,6 @@ package com.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +17,9 @@ public class FlowersForOrdering {
 
     private Integer quantity;
 
-    @OneToOne(mappedBy = "flowersForOrdering")
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "flowerId")
     private Flower flower;
 
     @ToString.Exclude

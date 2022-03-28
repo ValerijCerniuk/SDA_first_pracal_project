@@ -3,6 +3,7 @@ package com.repository;
 public class SQLQueries {
     public static final String SELECT_ALL_FLOWERS = "SELECT p FROM Flower p";
     public static final String SELECT_ALL_FLOWER_BY_ID = "SELECT p FROM Flower p WHERE p.flowerId = :id";
+    public static final String SELECT_ALL_FLOWER_BY_NAME = "SELECT p FROM Flower p WHERE p.name = :name";
 
     public static final String SELECT_ALL_FLOWERS_FOR_ORDERING = "SELECT p FROM Flowersforordering p";
     public static final String SELECT_ALL_FLOWERS_FOR_ORDERING_BY_ID =

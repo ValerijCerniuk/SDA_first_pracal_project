@@ -9,12 +9,14 @@ import com.repository.Repository;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.repository.SQLQueries.SELECT_ALL_FLOWER_BY_NAME;
+
 
 public class PrimaryData {
 
     public void loadPrimaryData() {
 
-        com.repository.Repository Repository = new Repository();
+        com.repository.Repository repository = new Repository();
 
         Flower roze = Flower.builder()
                 .name("Roze")
@@ -36,8 +38,9 @@ public class PrimaryData {
                 .amount(40)
                 .build();
 
-        Repository.createOrUpdateRecord(roze);
-        Repository.createOrUpdateRecord(tulpe);
+
+        repository.createOrUpdateRecord(roze);
+        repository.createOrUpdateRecord(tulpe);
 
         Customer jonas = Customer.builder()
                 .fullName("Jonas Jonaitis")
@@ -84,7 +87,7 @@ public class PrimaryData {
 
         jonasOrder2.setFlowersForOrderings(List.of(jonasFlowers3));
 
-        Repository.createOrUpdateRecord(jonas);
+        repository.createOrUpdateRecord(jonas);
 
     }
 }

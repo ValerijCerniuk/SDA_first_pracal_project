@@ -1,5 +1,6 @@
 package com.primaryData;
 
+import com.google.gson.reflect.TypeToken;
 import com.model.Customer;
 import com.model.Flower;
 import com.model.FlowersForOrdering;
@@ -9,8 +10,8 @@ import com.repository.Repository;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.repository.SQLQueries.SELECT_ALL_FLOWER_BY_NAME;
-
+import static com.primaryData.FromFileToObject.extractFromJsonFile;
+import static com.repository.SQLQueries.SELECT_ALL_FLOWER_BY_ID;
 
 public class PrimaryData {
 
@@ -18,29 +19,11 @@ public class PrimaryData {
 
         com.repository.Repository repository = new Repository();
 
-        Flower roze = Flower.builder()
-                .name("Roze")
-                .flowerPrice(2)
-                .intakeDate(LocalDate.of(2022, 2, 20))
-                .expires(LocalDate.of(2022, 3, 10))
-                .color("Red")
-                .length(40)
-                .amount(50)
-                .build();
+        List<Flower> flowers = extractFromJsonFile("src/main/resources/flowers.json", new TypeToken<>(){});
 
-        Flower tulpe = Flower.builder()
-                .name("Tulpe")
-                .flowerPrice(1)
-                .intakeDate(LocalDate.of(2022, 2, 22))
-                .expires(LocalDate.of(2022, 3, 5))
-                .color("Red")
-                .length(20)
-                .amount(40)
-                .build();
-
-
-        repository.createOrUpdateRecord(roze);
-        repository.createOrUpdateRecord(tulpe);
+        for (Flower flower : flowers) {
+            repository.createOrUpdateRecord(flower);
+        }
 
         Customer jonas = Customer.builder()
                 .fullName("Jonas Jonaitis")
@@ -65,7 +48,7 @@ public class PrimaryData {
 
         FlowersForOrdering jonasFlowers1 = FlowersForOrdering.builder()
                 .flowersOrder(jonasOrder1)
-                .flower(roze)
+                .flower(repository.findById(SELECT_ALL_FLOWER_BY_ID, Flower.class, 2))
                 .quantity(3)
                 .build();
 
@@ -73,7 +56,7 @@ public class PrimaryData {
 
         FlowersForOrdering jonasFlowers2 = FlowersForOrdering.builder()
                 .flowersOrder(jonasOrder1)
-                .flower(tulpe)
+                .flower(repository.findById(SELECT_ALL_FLOWER_BY_ID, Flower.class, 5))
                 .quantity(5)
                 .build();
 
@@ -81,7 +64,7 @@ public class PrimaryData {
 
         FlowersForOrdering jonasFlowers3 = FlowersForOrdering.builder()
                 .flowersOrder(jonasOrder2)
-                .flower(tulpe)
+                .flower(repository.findById(SELECT_ALL_FLOWER_BY_ID, Flower.class, 10))
                 .quantity(5)
                 .build();
 

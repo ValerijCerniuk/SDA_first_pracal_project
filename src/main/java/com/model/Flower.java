@@ -17,11 +17,11 @@ public class Flower {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer flowerId;
     private String name;
-    private Integer flowerPrice;
-    private double length;
+    private Double price;
+    private Double length;
     private String color;
-    private LocalDate intakeDate;
-    private LocalDate expires;
+    private String intakeDate;
+    private String  expires;
     private Integer amount;
 //     private Integer suppler_id;
 

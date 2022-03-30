@@ -3,11 +3,11 @@ package com.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.List;
+
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -25,8 +25,7 @@ public class Flower {
     private Integer amount;
 //     private Integer suppler_id;
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "flower")
-    private List<FlowersForOrdering> flowersForOrdering;
-
+    @ManyToOne
+    @JoinColumn(name = "flowerOrder_id")
+    private FlowersOrder flowerOrders;
 }

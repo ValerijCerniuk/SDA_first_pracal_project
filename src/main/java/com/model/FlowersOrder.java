@@ -6,11 +6,11 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 @Entity
 public class FlowersOrder {
     @Id
@@ -18,13 +18,12 @@ public class FlowersOrder {
     private Integer flowersOrderId;
 
     // private boolean status;
-    private LocalDate orderDate;
-    private LocalDate deliveryDay;
+    private String orderDate;
+    private String deliveryDay;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "flowersOrder")
-    private List<FlowersForOrdering> flowersForOrderings;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "flowerOrders")
+    private List<Flower> flowers;
 
-    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "customerId")
     private Customer customer;

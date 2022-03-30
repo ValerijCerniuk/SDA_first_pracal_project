@@ -23,11 +23,11 @@ class RepositoryTest {
 public static void setUpFlower(){
     Flower roze = Flower.builder()
             .name("TestFlower")
-            .price(10.0)
+            .flowerPrice(10)
             .intakeDate("TestDate1")
             .expires(("TestaDate2"))
             .color("TestColor")
-            .length(10.0)
+            .length(10)
             .amount(10)
             .build();
     repository.updateObject(roze);
@@ -59,8 +59,9 @@ public static void setUpFlower(){
         System.out.println("Running testCreate...");
 
         session.beginTransaction();
-        Flower flower = new Flower(null, "Test2", 20.0, 20.0,"TestColor2",
-                "Date", "Date", 20, null);
+
+        Flower flower = new Flower(null, "TestFlower", 10, 10, "Test",
+                "TestDate1", "TestDate2", 10, 10, null);
         Integer id = (Integer) session.save(flower);
 
         session.getTransaction().commit();
@@ -73,6 +74,12 @@ public static void setUpFlower(){
         System.out.println("Running testUpdate...");
 
         Integer id = 1;
+        Flower product = new Flower(null, "TestFlower", 10, 10, "Test",
+                "TestDate1", "TestDate2", 10, 10, null);
+
+        session.beginTransaction();
+        repository.updateObject(product);
+        session.getTransaction().commit();
 
         Flower updatedProduct = repository.findById(Flower.class, id);
 

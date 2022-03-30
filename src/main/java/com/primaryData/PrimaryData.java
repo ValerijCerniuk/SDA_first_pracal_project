@@ -1,43 +1,29 @@
 package com.primaryData;
 
+import com.google.gson.reflect.TypeToken;
 import com.model.Customer;
 import com.model.Flower;
-//import com.model.FlowersForOrdering;
+import com.model.FlowersForOrdering;
 import com.model.FlowersOrder;
 import com.repository.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.primaryData.FromFileToObject.extractFromJsonFile;
+import static com.repository.SQLQueries.SELECT_ALL_FLOWER_BY_ID;
 
 public class PrimaryData {
 
     public void loadPrimaryData() {
 
-        com.repository.Repository Repository = new Repository();
+        com.repository.Repository repository = new Repository();
 
-        Flower roze = Flower.builder()
-                .name("Roze")
-                .flowerPrice(2)
-                .intakeDate("2022, 2, 20")
-                .expires(("2022, 3, 10"))
-                .color("Red")
-                .length(40)
-                .amount(50)
-                .build();
+        List<Flower> flowers = extractFromJsonFile("src/main/resources/flowers.json", new TypeToken<>(){});
 
-        Flower tulpe = Flower.builder()
-                .name("Tulpe")
-                .flowerPrice(1)
-                .intakeDate("2022, 2, 22")
-                .expires("2022, 3, 5")
-                .color("Red")
-                .length(20)
-                .amount(40)
-                .build();
-
-        Repository.updateObject(roze);
-        Repository.updateObject(tulpe);
+        for (Flower flower : flowers) {
+            repository.createOrUpdateRecord(flower);
+        }
 
         Customer jonas = Customer.builder()
                 .fullName("Jonas Jonaitis")
@@ -48,43 +34,43 @@ public class PrimaryData {
 
         FlowersOrder jonasOrder1 = FlowersOrder.builder()
                 .customer(jonas)
-                .orderDate("2022, 3, 5")
-                .deliveryDay("2022, 3, 15")
+                .orderDate(LocalDate.of(2022, 3, 5))
+                .deliveryDay(LocalDate.of(2022, 3, 15))
                 .build();
 
         FlowersOrder jonasOrder2 = FlowersOrder.builder()
                 .customer(jonas)
-                .orderDate("2022, 4, 1")
-                .deliveryDay("2022, 4, 10")
+                .orderDate(LocalDate.of(2022, 4, 1))
+                .deliveryDay(LocalDate.of(2022, 4, 10))
                 .build();
 
         jonas.setOrders(List.of(jonasOrder1, jonasOrder2));
 
-//        FlowersForOrdering jonasFlowers1 = FlowersForOrdering.builder()
-//                .flowersOrder(jonasOrder1)
-//                .flower(roze)
-//                .quantity(3)
-//                .build();
-//
-//        jonasOrder1.setFlowersForOrderings(List.of(jonasFlowers1));
-//
-//        FlowersForOrdering jonasFlowers2 = FlowersForOrdering.builder()
-//                .flowersOrder(jonasOrder1)
-//                .flower(tulpe)
-//                .quantity(5)
-//                .build();
-//
-//        jonasOrder1.setFlowersForOrderings(List.of(jonasFlowers1, jonasFlowers2));
-//
-//        FlowersForOrdering jonasFlowers3 = FlowersForOrdering.builder()
-//                .flowersOrder(jonasOrder2)
-//                .flower(tulpe)
-//                .quantity(5)
-//                .build();
-//
-//        jonasOrder2.setFlowersForOrderings(List.of(jonasFlowers3));
+        FlowersForOrdering jonasFlowers1 = FlowersForOrdering.builder()
+                .flowersOrder(jonasOrder1)
+                .flower(repository.findById(SELECT_ALL_FLOWER_BY_ID, Flower.class, 2))
+                .quantity(3)
+                .build();
 
-        Repository.updateObject(jonas);
+        jonasOrder1.setFlowersForOrderings(List.of(jonasFlowers1));
+
+        FlowersForOrdering jonasFlowers2 = FlowersForOrdering.builder()
+                .flowersOrder(jonasOrder1)
+                .flower(repository.findById(SELECT_ALL_FLOWER_BY_ID, Flower.class, 5))
+                .quantity(5)
+                .build();
+
+        jonasOrder1.setFlowersForOrderings(List.of(jonasFlowers1, jonasFlowers2));
+
+        FlowersForOrdering jonasFlowers3 = FlowersForOrdering.builder()
+                .flowersOrder(jonasOrder2)
+                .flower(repository.findById(SELECT_ALL_FLOWER_BY_ID, Flower.class, 10))
+                .quantity(5)
+                .build();
+
+        jonasOrder2.setFlowersForOrderings(List.of(jonasFlowers3));
+
+        repository.createOrUpdateRecord(jonas);
 
     }
 }

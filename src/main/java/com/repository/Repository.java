@@ -3,51 +3,40 @@ package com.repository;
 import com.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.mapping.List;
 
+import java.util.List;
 
 public class Repository {
     private static Session session = HibernateUtil.getSessionFactory().openSession();
 
-    public <T> T findById(Class<T> o , Integer id) {
-        return session.find(o, id);
-                // session.createQuery("SELECT p FROM " + o.getClass() + " p WHERE " + id + "= :" + o.getClass())
-//                .setParameter(id, id)
-//                .getSingleResult();
+    public <T> List<T> findAll(String SQLQuery, Class<T> queryClass) {
+        System.out.println("Select all:");
+        return session.createQuery(SQLQuery, queryClass).getResultList();
     }
 
-    public java.awt.List findAll(String clasName) {
-        return (java.awt.List) session.createQuery("FROM " + clasName)
-                .getResultList();
+    public <T> T findById(String SQLQuery, Class<T> queryClass, Integer id) {
+        System.out.println("Find by id");
+        return session.createQuery(SQLQuery, queryClass)
+                .setParameter("id", id)
+                .getSingleResult();
     }
 
+    public <T> T findByName(String SQLQuery, Class<T> queryClass, String name) {
+        System.out.println("Find by name");
+        return session.createQuery(SQLQuery, queryClass)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
 
-    public void createObject(Object newObject) {
-        if (newObject != null) {
+    public <T> void createOrUpdateRecord(T recordToAdd) {
+        if (recordToAdd != null) {
             Transaction transaction = session.beginTransaction();
-            session.save(newObject);
+            session.saveOrUpdate(recordToAdd);
             transaction.commit();
-            System.out.println(newObject + " added.");
+            System.out.println(recordToAdd + " was saved");
         } else {
-            System.out.println("New Object not provided!");
+            System.out.println(recordToAdd + "was not saved!");
         }
     }
 
-
-    public void updateObject(Object newObject) {
-        if (newObject != null) {
-            Transaction transaction = session.beginTransaction();
-            session.saveOrUpdate(newObject);
-            transaction.commit();
-            System.out.println(newObject + " added.");
-        } else {
-            System.out.println("New Object not provided!");
-        }
-    }
-
-
-    public <T>void removeObjectById(Class<T> o, Integer id) {
-        Transaction transaction = session.beginTransaction();
-        session.delete(findById(o, id));
-    }
 }

@@ -1,0 +1,35 @@
+1. Think of an idea for the project.
+2. Create database model.
+3. Create GIT repository for the project, create project description.
+4. Mandatory functionality to have:
+	1. At least 3 tables.
+	2. Corresponding EntityRepository classes to interact with the databse and perform CRUD operations with entities.
+	3. Minimal user interface using console. Eg. User should be able to add, remove, update, find databse entries using menu.
+5. All business logic should be moved to service classes, for exmaple UserService, PrintingService, TransformationService (for transforming results to json)
+
+Development steps:
+
+1. Come up with an application idea and validate it with the trainer
+2. Set up a gitlab/github/bitbucket repository and create a maven project
+3. Commit the project structure to the repository. Make sure you create proper .gitignore and
+README.md files
+4. Decide on the technologies you will use for building the application (eg. Spring MVC, Spring
+Data, Thymeleaf, MySQL)
+5. Model the database on paper. Validate the database design with the trainer. Implement the
+database structure in MySQL. Export the database as an SQL script and add it to
+src/main/resources directory in your project
+6. Create a java model package, create entity classes and add hibernate/spring data
+configuration/annotations for table/relationship mapping
+7. Pick ONE basic entity (one that has no relationships) and start implementing the CRUD
+functionality for it. Add the three layers by creating the packages for controller, service,
+repository. Create classes/interfaces: EntityController, EntityService, EntityRepository.
+8. Implement CRUD for one or two more entities. This time pick entities that have
+one-to-many/many-to-many relationships. Add functionality that enables you to create those
+relations (eg. add students to a team, select a trainer for a module, etc)
+
+If you will achieve this pretty quick, think of some additional challanges, like:
+1. Data conversion to json, csv or xml type formats, try out new libraries.
+2. JavaFx
+3. Difficult at this time, but try to create Spring Boot application and expose REST webservices.
+
+Note: Don't forget clean code, proper naming, logic extraction, Unit tests, exceptions :)

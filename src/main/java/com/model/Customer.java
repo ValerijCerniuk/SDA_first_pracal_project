@@ -1,19 +1,18 @@
 package com.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
+@ToString
 public class Customer {
 
     @Id
@@ -24,6 +23,6 @@ public class Customer {
     private String phoneNumber;
     private String billingAddress;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<FlowersOrder> orders;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    private List<FlowersOrder> flowersOrders;
 }

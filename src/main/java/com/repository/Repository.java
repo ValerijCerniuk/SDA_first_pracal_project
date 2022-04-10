@@ -9,34 +9,42 @@ import java.util.List;
 public class Repository {
     private static Session session = HibernateUtil.getSessionFactory().openSession();
 
-    public <T> List<T> findAll(String SQLQuery, Class<T> queryClass) {
+    public <T> T findById(Class<T> o , Integer id) {
+        return session.find(o, id);
+
+    }
+
+    public <T> List<T> findAll(Class<T> queryClass) {
         System.out.println("Select all:");
-        return session.createQuery(SQLQuery, queryClass).getResultList();
+        return session.createQuery("SELECT p FROM " + queryClass.getName() + " p", queryClass).getResultList();
     }
 
-    public <T> T findById(String SQLQuery, Class<T> queryClass, Integer id) {
-        System.out.println("Find by id");
-        return session.createQuery(SQLQuery, queryClass)
-                .setParameter("id", id)
-                .getSingleResult();
-    }
-
-    public <T> T findByName(String SQLQuery, Class<T> queryClass, String name) {
-        System.out.println("Find by name");
-        return session.createQuery(SQLQuery, queryClass)
-                .setParameter("name", name)
-                .getSingleResult();
-    }
-
-    public <T> void createOrUpdateRecord(T recordToAdd) {
-        if (recordToAdd != null) {
+    public void createObject(Object newObject) {
+        if (newObject != null) {
             Transaction transaction = session.beginTransaction();
-            session.saveOrUpdate(recordToAdd);
+            session.save(newObject);
             transaction.commit();
-            System.out.println(recordToAdd + " was saved");
+            System.out.println(newObject + " added.");
         } else {
-            System.out.println(recordToAdd + "was not saved!");
+            System.out.println("New Object not provided!");
         }
     }
 
+
+    public void updateObject(Object newObject) {
+        if (newObject != null) {
+            Transaction transaction = session.beginTransaction();
+            session.saveOrUpdate(newObject);
+            transaction.commit();
+            System.out.println(newObject + " added.");
+        } else {
+            System.out.println("New Object not provided!");
+        }
+    }
+
+
+    public <T>void removeObjectById(Class<T> o, Integer id) {
+        Transaction transaction = session.beginTransaction();
+        session.delete(findById(o, id));
+    }
 }
